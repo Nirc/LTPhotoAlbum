@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29215.179
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LTPhotoAlbum", "LTPhotoAlbum\LTPhotoAlbum.csproj", "{B1DA01F9-1C87-4F4B-B065-B7AD8A66082A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LTPhotoAlbum.UnitTests", "LTPhotoAlbum.UnitTests\LTPhotoAlbum.UnitTests.csproj", "{0817E5B9-4886-42C1-ACC7-7B072FDC8950}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B1DA01F9-1C87-4F4B-B065-B7AD8A66082A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1DA01F9-1C87-4F4B-B065-B7AD8A66082A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1DA01F9-1C87-4F4B-B065-B7AD8A66082A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1DA01F9-1C87-4F4B-B065-B7AD8A66082A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0817E5B9-4886-42C1-ACC7-7B072FDC8950}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0817E5B9-4886-42C1-ACC7-7B072FDC8950}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0817E5B9-4886-42C1-ACC7-7B072FDC8950}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0817E5B9-4886-42C1-ACC7-7B072FDC8950}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5569DCCF-4ABD-43A4-ACF7-45E4D65087FD}
+	EndGlobalSection
+EndGlobal
