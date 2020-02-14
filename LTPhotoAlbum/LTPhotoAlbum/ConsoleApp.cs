@@ -60,6 +60,7 @@ namespace LTPhotoAlbum
         {
             int albumId;
             string input = _processor.RequestUserInput();
+            if (input == null) { input = ""; }
             while (Int32.TryParse(input, out albumId) == false)
             {
                 input = _processor.RequestUserInput();

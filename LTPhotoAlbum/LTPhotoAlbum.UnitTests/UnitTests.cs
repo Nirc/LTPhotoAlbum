@@ -37,19 +37,20 @@ namespace LTPhotoAlbum.UnitTests
             await _consoleApp.Process(new CancellationTokenSource().Token);
 
             // Assert
-            // Everything should be called exactly once
+            // Each of these should be called exactly once for a happy path
             _mockConsoleProcessor.Verify(m => m.RequestUserInput(), Times.Once);
             _mockPhotoAlbumClient.Verify(m => m.GetPhotos(It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Once);
             _mockConsoleProcessor.Verify(m => m.DisplayPhotoData(It.IsAny<IEnumerable<Photo>>()), Times.Once);
         }
 
         [Fact]
-        public async Task Process_InvalidInput_AsksTwice()
+        public async Task Process_InvalidInput_AsksUntilValid()
         {
             // Arrange
-            // Return a non-integer the first time, then an integer the second
+            // Return a non-integer the first time, then null, then an integer
             _mockConsoleProcessor.SetupSequence(x => x.RequestUserInput())
                 .Returns("f")
+                .Returns((string)null)
                 .Returns("1");
             _mockPhotoAlbumClient.Setup(x => x.GetPhotos(It.IsAny<int>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(Enumerable.Empty<Photo>()));
 
@@ -57,14 +58,15 @@ namespace LTPhotoAlbum.UnitTests
             await _consoleApp.Process(new CancellationTokenSource().Token);
 
             // Assert
-            // Ensure that while RequestUserInput was called twice, the actual processing was only done once since the first input was invalid
-            _mockConsoleProcessor.Verify(m => m.RequestUserInput(), Times.Exactly(2));
+            // Ensure that while RequestUserInput was called three times, the actual processing was only done once since the first inputs were invalid
+            // This ensures that the input is being validated
+            _mockConsoleProcessor.Verify(m => m.RequestUserInput(), Times.Exactly(3));
             _mockPhotoAlbumClient.Verify(m => m.GetPhotos(It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Once);
             _mockConsoleProcessor.Verify(m => m.DisplayPhotoData(It.IsAny<IEnumerable<Photo>>()), Times.Once);
         }
 
         [Fact]
-        public async Task Process_APIThrowsException_NoDisplay()
+        public async Task Process_APIRequestFails_DoesNotDisplay()
         {
             // Arrange
             _mockConsoleProcessor.Setup(x => x.RequestUserInput()).Returns("1");
