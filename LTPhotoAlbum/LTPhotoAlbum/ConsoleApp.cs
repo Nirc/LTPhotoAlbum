@@ -58,19 +58,19 @@ namespace LTPhotoAlbum
 
         public async Task Process(CancellationToken cancellationToken)
         {
-            int albumId;
-            string input = _processor.RequestUserInput();
-            if (input == null) { input = ""; }
-            while (Int32.TryParse(input, out albumId) == false)
+            int? albumId = null;
+            while (albumId == null)
             {
-                input = _processor.RequestUserInput();
+                Console.WriteLine("Please enter an integer for an album id:");
+                var input = _processor.ReadConsoleInput();
+                albumId = _processor.ParseUserInput(input);
             }
 
-            Console.WriteLine("Fetching album data...");
-            IEnumerable<Photo> photos = null;
+            Console.WriteLine("Fetching album data...\n");
+            IList<Photo> photos = null;
             try
             {
-                photos = await _client.GetPhotos(albumId, cancellationToken);
+                photos = await _client.GetPhotos(albumId.Value, cancellationToken);
             }
             catch (Exception e)
             {
@@ -79,10 +79,9 @@ namespace LTPhotoAlbum
 
             if (photos != null)
             {
-                _processor.DisplayPhotoData(photos);
+                var dataString = _processor.GetPhotoDataString(photos);
+                Console.WriteLine(dataString);
             }
-
-            Console.WriteLine("Enter another album id:");
         }
     }
 }

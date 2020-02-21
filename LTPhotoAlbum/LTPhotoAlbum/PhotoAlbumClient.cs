@@ -11,7 +11,7 @@ namespace LTPhotoAlbum
 {
     public interface IPhotoAlbumClient
     {
-        Task<IEnumerable<Photo>> GetPhotos(int albumId, CancellationToken cancellationToken);
+        Task<IList<Photo>> GetPhotos(int albumId, CancellationToken cancellationToken);
     }
 
     public class PhotoAlbumClient : IPhotoAlbumClient
@@ -23,7 +23,7 @@ namespace LTPhotoAlbum
             _client = client;
         }
 
-        public async Task<IEnumerable<Photo>> GetPhotos(int albumId, CancellationToken cancellationToken)
+        public async Task<IList<Photo>> GetPhotos(int albumId, CancellationToken cancellationToken)
         {
             using (var request = new HttpRequestMessage(HttpMethod.Get, $"?albumId={albumId}"))
             {
@@ -33,7 +33,7 @@ namespace LTPhotoAlbum
                     {
                         if (response.IsSuccessStatusCode)
                         {
-                            return await JsonSerializer.DeserializeAsync<IEnumerable<Photo>>(stream, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }, cancellationToken);
+                            return await JsonSerializer.DeserializeAsync<IList<Photo>>(stream, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }, cancellationToken);
                         }
 
                         throw new ApiException(response.StatusCode, "Photo Album API request failed");
