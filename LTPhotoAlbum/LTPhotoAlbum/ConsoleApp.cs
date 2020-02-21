@@ -33,6 +33,7 @@ namespace LTPhotoAlbum
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
+            _logger.LogInformation("Application started");
             _cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             _lifetime.ApplicationStopping.Register(OnStopping);
             Console.WriteLine("Welcome to the photo album service.\nTo view an album's information, enter in the id of an album.");
@@ -45,11 +46,15 @@ namespace LTPhotoAlbum
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
+            // Won't see log from this in the console since it closes so quickly but in the real world it could go to a log file
+            _logger.LogInformation("Application stopped");
             return Task.CompletedTask;
         }
 
         private void OnStopping()
         {
+            _logger.LogInformation("Application stopping");
+
             _cts.Cancel();
             // Console.ReadLine blocks the thread
             var handle = GetStdHandle(-10);
@@ -74,7 +79,7 @@ namespace LTPhotoAlbum
             }
             catch (Exception e)
             {
-                Console.WriteLine($"There was an error getting photo data.\n{e.Message}");
+                _logger.LogError(e, "There was an error getting photo data.");
             }
 
             if (photos != null)

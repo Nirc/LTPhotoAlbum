@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -36,8 +37,13 @@ namespace LTPhotoAlbum
                         client.DefaultRequestHeaders.Accept.ParseAdd("application/json");
                         client.Timeout = TimeSpan.FromSeconds(appSettings.TimeoutSeconds);
                     });
+
+                    Log.Logger = new LoggerConfiguration()
+                        .ReadFrom.Configuration(context.Configuration)
+                        .CreateLogger();
                 })
-                .UseConsoleLifetime();
+                .UseConsoleLifetime()
+                .UseSerilog();
 
             try
             {
@@ -45,7 +51,7 @@ namespace LTPhotoAlbum
             }
             catch(Exception e)
             {
-                // Log the error to a centralized log location
+                Log.Logger.Error(e, "The application encountered a fatal error.");
             }
         }
     }
